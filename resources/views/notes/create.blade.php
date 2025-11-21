@@ -1,62 +1,121 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Tulis Catatan Baru') }}
-        </h2>
-    </x-slot>
+    <div class="container">
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                
+                {{-- Header Sederhana --}}
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <a href="{{ route('notes.index') }}" class="text-decoration-none text-muted fw-bold small">
+                        <i class="bi bi-arrow-left me-1"></i> Kembali ke Daftar
+                    </a>
+                    <h5 class="fw-bold text-dark m-0">Tulis Cerita Baru 📝</h5>
+                </div>
 
-    <div class="py-12">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-8">
+                {{-- Card Form --}}
+                <div class="card border-0 shadow-sm rounded-4 bg-white">
+                    <div class="card-body p-4 p-lg-5">
+                        
+                        {{-- PENTING: Tambahkan enctype="multipart/form-data" untuk support upload file --}}
+                        <form action="{{ route('notes.store') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
 
-                <!-- Form Start -->
-                <!-- enctype="multipart/form-data" WAJIB ADA kalau mau upload file/gambar -->
-                <form action="{{ route('notes.store') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
+                            {{-- Input Judul --}}
+                            <div class="mb-4">
+                                <label for="title" class="form-label fw-bold text-secondary small text-uppercase ls-1">Judul Catatan</label>
+                                <input type="text" 
+                                       class="form-control form-control-lg border-0 bg-light rounded-3 px-3" 
+                                       id="title" 
+                                       name="title" 
+                                       placeholder="Beri judul yang menarik..." 
+                                       required>
+                            </div>
 
-                    <!-- Pilihan Kategori -->
-                    <div class="mb-6">
-                        <label for="category_id" class="block text-sm font-medium text-gray-700 mb-2">Kategori</label>
-                        <select name="category_id" id="category_id" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
-                            <option value="" disabled selected>-- Pilih Kategori --</option>
-                            @foreach($categories as $cat)
-                                <option value="{{ $cat->id }}">{{ $cat->name }}</option>
-                            @endforeach
-                        </select>
-                        <p class="text-xs text-gray-500 mt-1">Belum ada kategori? <a href="{{ route('categories.create') }}" class="text-blue-500 hover:underline">Buat di sini</a></p>
+                            {{-- Input Kategori (Optional) --}}
+                            <div class="mb-4">
+                                <label for="category_id" class="form-label fw-bold text-secondary small text-uppercase ls-1">Kategori</label>
+                                <div class="input-group">
+                                    <span class="input-group-text border-0 bg-light rounded-start-3 ps-3 text-muted">
+                                        <i class="bi bi-tag"></i>
+                                    </span>
+                                    <select class="form-select border-0 bg-light rounded-end-3 py-2 text-muted" id="category_id" name="category_id">
+                                        <option value="" selected>Tanpa Kategori</option>
+                                        @foreach($categories as $category)
+                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            {{-- Input Upload Gambar (BARU) --}}
+                            <div class="mb-4">
+                                <label for="file" class="form-label fw-bold text-secondary small text-uppercase ls-1">
+                                    Dokumen Tambahan <span class="text-muted fw-normal text-lowercase">(opsional)</span>
+                                </label>
+                                <input type="file" 
+                                       class="form-control border-0 bg-light rounded-3 px-3 py-2 text-muted" 
+                                       id="file" 
+                                       name="file" 
+                                       accept="image/*">
+                                <div class="form-text text-muted small ms-1">Format: JPG, PNG, JPEG. Maksimal 2MB.</div>
+                            </div>
+
+                            {{-- Input Isi (Textarea) --}}
+                            <div class="mb-5">
+                                <label for="content" class="form-label fw-bold text-secondary small text-uppercase ls-1">Isi Catatan</label>
+                                <textarea class="form-control border-0 bg-light rounded-3 p-3" 
+                                          id="content" 
+                                          name="content" 
+                                          rows="8" 
+                                          placeholder="Apa yang ada di pikiranmu saat ini?..." 
+                                          required></textarea>
+                            </div>
+
+                            {{-- Action Buttons --}}
+                            <div class="d-flex justify-content-end gap-2 align-items-center">
+                                <a href="{{ route('notes.index') }}" class="btn btn-light rounded-pill px-4 py-2 fw-bold text-muted">
+                                    Batal
+                                </a>
+                                <button type="submit" class="btn btn-dark rounded-pill px-5 py-2 fw-bold shadow-sm">
+                                    <i class="bi bi-save2 me-2"></i> Simpan
+                                </button>
+                            </div>
+
+                        </form>
+
                     </div>
-
-                    <!-- Input Judul -->
-                    <div class="mb-6">
-                        <label for="title" class="block text-sm font-medium text-gray-700 mb-2">Judul Catatan</label>
-                        <input type="text" name="title" id="title" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Contoh: Resep Nasi Goreng Spesial" required>
-                    </div>
-
-                    <!-- Input Isi Catatan -->
-                    <div class="mb-6">
-                        <label for="content" class="block text-sm font-medium text-gray-700 mb-2">Isi Catatan</label>
-                        <textarea name="content" id="content" rows="10" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Tulis ide cemerlangmu di sini..." required></textarea>
-                    </div>
-
-                    <!-- Input File/Gambar (Opsional) -->
-                    <div class="mb-6">
-                        <label for="file" class="block text-sm font-medium text-gray-700 mb-2">Upload Gambar (Opsional)</label>
-                        <input type="file" name="file" id="file" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-                    </div>
-
-                    <!-- Tombol Aksi -->
-                    <div class="flex justify-end gap-4 border-t pt-6">
-                        <a href="{{ route('notes.index') }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 font-medium">
-                            Batal
-                        </a>
-                        <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-bold shadow-lg transform hover:-translate-y-0.5 transition">
-                            Simpan Catatan
-                        </button>
-                    </div>
-                </form>
-                <!-- Form End -->
-
+                </div>
             </div>
         </div>
+
     </div>
+
+    {{-- CSS Tambahan Khusus Halaman Ini --}}
+    <style>
+        /* Efek fokus pada input agar sesuai tema */
+        .form-control:focus, .form-select:focus {
+            background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(33, 37, 41, 0.1); /* Ring halus warna dark */
+            border: 1px solid #dee2e6;
+        }
+        .ls-1 {
+            letter-spacing: 1px;
+        }
+        /* Custom styling untuk input file agar lebih cantik di Bootstrap 5 */
+        input[type="file"]::file-selector-button {
+            border: none;
+            background: #e9ecef;
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.375rem;
+            color: #495057;
+            margin-right: 1rem;
+            transition: all .2s;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        input[type="file"]::file-selector-button:hover {
+            background: #dde0e3;
+            cursor: pointer;
+        }
+    </style>
 </x-app-layout>
