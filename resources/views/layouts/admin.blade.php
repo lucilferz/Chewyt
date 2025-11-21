@@ -5,31 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Admin Panel - ChewytPad</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="{{ asset('bootstrap_5_3_8/css/bootstrap.min.css') }}" rel="stylesheet">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> 
+   
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
     <style>
         :root {
             --sidebar-width: 260px;
             --topbar-height: 70px;
-            --primary-color: #6366f1; /* Indigo modern */
+            --primary-color: #6366f1;
         }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #F3F4F6; /* Abu-abu muda soft */
+            background-color: #F3F4F6;
             overflow-x: hidden;
         }
         
-        /* 1. SIDEBAR STYLE */
+        /* SIDEBAR */
         .sidebar {
             width: var(--sidebar-width);
             height: 100vh;
             position: fixed;
             top: 0;
             left: 0;
-            background-color: #1e293b; /* Slate gelap */
+            background-color: #1e293b;
             color: white;
             z-index: 1000;
             transition: margin-left 0.3s;
@@ -68,7 +72,7 @@
             font-size: 1.1rem;
         }
 
-        /* 2. MAIN CONTENT WRAPPER */
+        /* MAIN CONTENT */
         .main-content {
             margin-left: var(--sidebar-width);
             width: calc(100% - var(--sidebar-width));
@@ -78,11 +82,11 @@
             transition: margin-left 0.3s, width 0.3s;
         }
 
-        /* 3. NAVBAR MODERN STYLE */
+        /* NAVBAR */
         .top-navbar {
             height: var(--topbar-height);
             background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px); /* Efek kaca */
+            backdrop-filter: blur(10px);
             border-bottom: 1px solid #e5e7eb;
             padding: 0 30px;
             position: sticky;
@@ -92,7 +96,6 @@
             align-items: center;
         }
 
-        /* Search Box Styling */
         .search-box {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
@@ -118,7 +121,6 @@
             color: #475569;
         }
 
-        /* Icon Buttons */
         .btn-icon {
             width: 40px;
             height: 40px;
@@ -140,12 +142,11 @@
             padding: 30px;
         }
 
-        /* Responsiveness */
         @media (max-width: 768px) {
             .sidebar { margin-left: -260px; }
             .sidebar.show { margin-left: 0; }
             .main-content { margin-left: 0; width: 100%; }
-            .search-box { display: none; } /* Sembunyikan search di HP */
+            .search-box { display: none; }
         }
     </style>
 </head>
@@ -172,10 +173,10 @@
             </a>
         </div>
     </div>
+
     <div class="main-content">
         
         <nav class="top-navbar justify-content-between">
-            
             <div class="d-flex align-items-center gap-3">
                 <button class="btn btn-link text-secondary p-0 d-md-none" onclick="toggleSidebar()">
                     <i class="bi bi-list fs-4"></i>
@@ -191,7 +192,6 @@
             </div>
 
             <div class="d-flex align-items-center gap-3">
-                
                 <button class="btn-icon position-relative">
                     <i class="bi bi-bell fs-5"></i>
                     <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" style="width: 10px; height: 10px;"></span>
@@ -209,8 +209,6 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
                         <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i> Profil Saya</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i> Settings</a></li>
-                        <li><hr class="dropdown-divider"></li>
                         <li>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
@@ -219,9 +217,9 @@
                         </li>
                     </ul>
                 </div>
-
             </div>
         </nav>
+
         <div class="page-content">
             @yield('content')
         </div>
@@ -235,7 +233,7 @@
     }
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ asset('bootstrap_5_3_8/js/bootstrap.bundle.min.js') }}"></script>
 
 </body>
 </html>
